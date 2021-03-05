@@ -97,6 +97,7 @@
             {{else if eq $.Reaction.Emoji.Name "❗"}}
                 {{$data = sdict "color" "message" "Report dismissed, warned for false report." "menu" "none" "emojis" (cslice "🏳️") "notify" false}}
             {{end}}
+            {{if ne $.Reaction.Emoji.Name "🏳️"}}
             {{$data.Set "rembed" $report}}
             {{$data.Set "log" $logs}}
             {{$data.Set "reportID" $.Message.ID}}
@@ -104,6 +105,7 @@
             {{$data.Set "moderator" $.User}}
             {{$data.Set "discussion" $disc}}
             {{template "edit" $data}}
+            {{end}}
         {{end}}
     {{else if and $isMod (eq .Reaction.Emoji.Name "🔐") (reFindAllSubmatches "•" $embed.Footer.Text)}}
         {{$report.Set "Footer" (sdict "text" (printf "Responsible Moderator: %s (ID %d)" .User.String .User.ID))}}
