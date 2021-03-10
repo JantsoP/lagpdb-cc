@@ -1,6 +1,6 @@
-### A one-line summary what this PR does
+**A one-line summary what this PR does**
 
-### A detailed description what this PR does / added
+**Your detailed argument and description of your addition**
 
 ---
 **Status:**
