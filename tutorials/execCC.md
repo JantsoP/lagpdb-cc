@@ -18,7 +18,7 @@ This is typically one of either a set ID like 5 or the special `.CCID` template,
 ##### How do I get that CC-ID?
 You can do so by either using the `.CCID` template, or by taking a look at the following example; The number inside the marker box is the custom command ID, without the `#`:
 
-![example](https://imgur.com/a/JA19tcC)
+![example](https://imgur.com/a/JA19tcC.png)
 
 #### Channel
 This obviously represents the channel of execution. You may use `nil` or `.Channel.ID` for the current channel, however a set channel ID or a channel name may also be used.
