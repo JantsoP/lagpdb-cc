@@ -19,8 +19,8 @@ A custom command package for your server extending the functionality of the nati
 Please read the `README.md` file in the corresponding folder for a guide on how to install each version, they'll walk you through it step by step.
 
 ## Author, License, and Disclaimer
-This custom command package was authored and is maintained by [l-zeuch](https://github.com/Olde7325 "l-zeuch's profile on GitHub").  
-The author does not take any responsibility for bugs or other unintended behaviour caused by altered code beyond the intended and described necessary configuration, as stated in the [license agreement](../LICENSE "License").
+This custom command package was authored and is maintained by [l-zeuch](https://github.com/l-zeuch "l-zeuch's profile on GitHub").  
+The author does not take any responsibility for bugs or other unintended behaviour caused by altered code beyond the intended and described necessary configuration, as stated in the [license agreement](../../LICENSE "License").
 
 ## Acknowledgements
 Huge kudos to [NaruDevnote](https://www.github.com/NaruDevnote "NaruDevnote's profile on GitHub") as he participated in a manner I highly appreciate. <br/>
