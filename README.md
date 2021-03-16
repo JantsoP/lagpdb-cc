@@ -1,34 +1,71 @@
-# About this repository
-A small little collection of some high quality, well documented custom commands for the Discord bot [YAGPDB.xyz](https://www.yagpdb.xyz "YAGPDB.xyz homepage") made by [Jonas747](https://github.com/jonas747 "Jonas747's profile on GitHub").
-This is not an official repository, however I plan on PRing some CCs to [the official one](https://github.com/yagpdb-cc/yagpdb-cc "official yagpdb CC repository") in the far, far future.
-
-<details>
-<summary>List of custom commands</summary>
-
-* [miscellaneous](./misc)
-    * [Bookmark](./misc/bookmark.gotmpl)
-    * [Reaction Bookmark](./misc/reactionbookmark.gotmpl)
-* [moderation](./moderation)
-    * [Report System](./moderation/Report-System)
-</details>
-
-*This is by no means an exhaustive list, nor is it meant to be. Please browse in the individual folders for a more detailed overview of the contained custom commands.*
-
-## About these commands
-When you found your way here, I assume that you already have some basic CC knowledge (how to add them, you maybe even wrote your first basic ones). Yet I still try to make it as clear as possible how to use them. If you have any improvements to suggest, or need help, feel free to either open an issue or PR.
-## Something broke?
-If something broke, shoot me a ping in the [YAGPDB Support Server](https://discord.com/invite/0vYlUK2XBKldPSMY) (you must read the faq in order to gain write access to the server!). Alternatively, you can join [my server](https://discord.gg/tFhxypKcvm). 
-
-Provide screenshots of the input and the error message, that way I can pinpoint it down faster!
-Did you delete the error message? Log the channel and try to retrieve it back, or look at the settings of the erroring custom command, you'll find the latest error there. The more context, the better.
-
-## Various
-Nothing much to say, actually. Whenever I think a custom command of mine is worth sharing, you'll find it here pretty much soon after implementation on my server. I follow the git flow branching model and still call it master.
-
-## Author and License
-Created and maintained by [l-zeuch](https://github.com/l-zeuch "l-zeuch's profile on GitHub").
-
-This repository is licensed under the GNU Affero General Public License v3.0.
+<h1 align="center"><img src="https://yagpdb.xyz/static/img/logo_y.png" height=32px width=32px></img>&nbspYAGPDB Custom Commands</h1>
 
 ---
-Copyright (c) 2020
+## About this repository
+A collection of high quality and well documented custom commands to be used in your server.
+These custom commands only work for the discord bot [YAGPDB.xyz](https://yagpdb.xyz), as they were exclusively written for that specific bot. They might look they would work with MEE6, howevever they **do not.**
+
+## Table of contents
+
+
+## List of custom commands
+
+<details>
+<summary>[Miscellaneous](./misc)</summary>
+
+* bookmark
+* reaction bookmark
+</details>
+
+<details>
+<summary>[Moderation](./moderation)</summary>
+
+* Report System v1
+* Report System v2
+</details>
+
+<details>
+<summary>[Tutorials](./tutorials)</summary>
+
+* execCC - A detailed guide
+</details>
+
+## Important
+As quite a lot of work is put into the creation of a custom command, starting from the very idea to the final product, please show some appreciation by sharing and maybe starring this repository and keeping the leading comment in the custom command response:
+
+```
+    Author: Luca Z. <https://github.com/l-zeuch>
+    License: APGL-3.0
+    Copyright: (c) 2021
+```
+> Proper credit will be given should the author differ.
+
+Should you not find such a block in the leading comment, you are free to use it without restrictions and limitations.
+
+### How does the License work?
+The [license](LICENSE) is the GNU Affero General Public License v3.0. As that is quite a long name, people decided that the short version is `AGPL-3.0`, as seen in the small block above.
+
+This is the TL;DR version of this license:
+
+* You may use it for commerical use, modification, distribution, patent use, and private use.
+* You must state license and license holder (that would be AGPL-3.0 and me, Luca Z.).
+* You must disclose the source (this repository).
+* You must redistribute the software under the same license.
+* You must state changes made to the software.
+* I am not liable for any damage.
+* I am not giving any warranty on the custom commands.
+
+> Although the last two points are technically how this license works, I give a limited warranty on a working and safe custom command.
+
+## Various
+Nothing much left, honestly.
+
+This repository follows for the larger part the git flow branching model, and the main branch is still called master. Not a very old repository, but here we go.
+
+
+## Useful Links
+* [YAGPDB documentation](https://docs.yagpdb.xyz)
+* [YAGPDB Learning resources](https://learn.yagpdb.xyz)
+* [The support server](https://discord.com/invite/5uVyq2E)
+---
+Copyright (c) 2020, Luca Z.
