@@ -78,6 +78,20 @@ If you read this far, you probably want to know what the benefits of `execCC`! I
 | ⚠ To prevent abuse of this, custom commands executed with `execCC` are strictly limited to 10 per channel per minute. |
 | --- |
 
+### Delaying a custom command
+As I said earlier, `sleep` is heavily limited; So, when we want to delay a custom command to mimick `sleep`, we need to use some brainpower and use this code:
+
+```go
+{{if not .ExecData}}
+{{/*before delay*/}}
+{{execCC .CCID nil delay "data" }}
+{{else}}
+{{/*what happens after the delay*/}}
+{{end}}
+```
+
+This will cause a delay in the custom command without essentially blocking your entire server by using `sleep`.
+
 ## scheduleUniqueCC
 Let us take a look at a similar but also quite different function to `execCC`: `scheduleUniqueCC`.
 
