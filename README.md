@@ -11,21 +11,21 @@ These custom commands only work for the discord bot [YAGPDB.xyz](https://yagpdb.
 ## List of custom commands
 
 <details>
-<summary>[Miscellaneous](./misc)</summary>
+<summary><a href="./misc">Miscellaneous</a></summary>
 
 * bookmark
 * reaction bookmark
 </details>
 
 <details>
-<summary>[Moderation](./moderation)</summary>
+<summary><a href="./moderation">Moderation</a></summary>
 
 * Report System v1
 * Report System v2
 </details>
 
 <details>
-<summary>[Tutorials](./tutorials)</summary>
+<summary><a href="./tutorials">Tutorials</a></summary>
 
 * execCC - A detailed guide
 </details>
