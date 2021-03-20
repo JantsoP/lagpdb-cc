@@ -81,12 +81,13 @@ If you read this far, you probably want to know what the benefits of `execCC`! I
 ### Delaying a custom command
 As I said earlier, `sleep` is heavily limited; So, when we want to delay a custom command to mimick `sleep`, we need to use some brainpower and use this code:
 
+###### Delaying a custom command with execCC
 ```go
 {{if not .ExecData}}
-{{/*before delay*/}}
-{{execCC .CCID nil delay "data" }}
+    {{/*before delay*/}}
+    {{execCC .CCID nil delay "data" }}
 {{else}}
-{{/*what happens after the delay*/}}
+    {{/*what happens after the delay*/}}
 {{end}}
 ```
 
