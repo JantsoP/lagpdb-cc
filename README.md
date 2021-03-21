@@ -57,10 +57,19 @@ This is the TL;DR version of this license:
 
 > Although the last two points are technically how this license works, I give a limited warranty on a working and safe custom command.
 
+## Adding a custom commands
+1. Go to the [dashboard](https://yagpdb.xyz/manage), log in, select your server.
+2. Navigate to `Core > Custom commands`
+3. Create a new custom command
+4. Follow the setup as described in the heading comment of each custom command script you find here.
+
+> This can also be found in [the learning resources](https://learn.yagpdb.xyz/the-custom-command-interface).
+
 ## Various
 Nothing much left, honestly.
 
-This repository follows for the larger part the git flow branching model, and the main branch is still called master. Not a very old repository, but here we go.
+This repository follows for the larger part the git flow branching model, and the main branch is still called master.<br/>
+You won't find many custom commands, however those which are here are, in my opinion, quite useful and well documented.
 
 
 ## Useful Links
