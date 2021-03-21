@@ -48,7 +48,7 @@ The [license](LICENSE) is the GNU Affero General Public License v3.0. As that is
 This is the TL;DR version of this license:
 
 * You may use it for commerical use, modification, distribution, patent use, and private use.
-* You must state license and license holder (that would be AGPL-3.0 and me, Luca Z.).
+* You must state license and license holder (that would be AGPL-3.0 and the author of the custom command).
 * You must disclose the source (this repository).
 * You must redistribute the software under the same license.
 * You must state changes made to the software.
