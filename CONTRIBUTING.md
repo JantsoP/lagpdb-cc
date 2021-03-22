@@ -69,3 +69,7 @@ Please make all of your PRs against the `dev` branch.
 You can ignore the file extension, I'll take care of that!
 
 Thanks for contributing!
+
+
+---
+These guildelines were adapted for the most part from [yagpdb-cc/yagpdb-cc](https://github.com/yagpdb-cc/yagpdb-cc/blob/master/CONTRIBUTING.md) made by (jo3-l)[https://github.com]/jo3-l].
