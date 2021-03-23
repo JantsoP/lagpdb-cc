@@ -1,3 +1,6 @@
 [submodule "execCC"]
 	path = tutorials/execCC
 	url = https://gist.github.com/l-zeuch/9f10d128184509ad531778f26550ed6d
+[submodule "database"]
+	path = tutorials/database
+	url = https://gist.github.com/l-zeuch/8ba168c8ca1c5c72f789669d3b5e73c7
