@@ -18,9 +18,14 @@ These custom commands only work for the discord bot [YAGPDB.xyz](https://yagpdb.
 </details>
 
 <details>
+<summary><a href="./fun">Fun</a></summary>
+
+* Pokemon custom command package
+</details>
+
+<details>
 <summary><a href="./moderation">Moderation</a></summary>
 
-* Report System v1
 * Report System v2
 </details>
 
