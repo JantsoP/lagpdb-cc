@@ -1,13 +1,18 @@
 <h1 align="center"><img src="https://yagpdb.xyz/static/img/logo_y.png" height=32px width=32px></img>&nbspYAGPDB Custom Commands</h1>
 
 ---
+<div align="center">
+<a href="https://github.com/l-zeuch/lagpdb-cc/stargazers/"><img src="https://img.shields.io/github/stars/l-zeuch/lagpdb-cc?logo=github&style=for-the-badge"></a>
+<img src="https://img.shields.io/github/repo-size/l-zeuch/lagpdb-cc?logo=github&style=for-the-badge">
+<a href="https://github.com/l-zeuch/lagpdb-cc/blob/master/LICENSE"><img src="https://img.shields.io/github/license/l-zeuch/lagpdb-cc?style=for-the-badge"></a>
+<a href="https://github.com/l-zeuch"><img src="https://img.shields.io/static/v1?label=Maintaner&message=l-zeuch&color=green&style=for-the-badge"></a>
+</div>
+
 ## About this repository
 A collection of high quality and well documented custom commands to be used in your server.
 These custom commands only work for the discord bot [YAGPDB.xyz](https://yagpdb.xyz), as they were exclusively written for that specific bot. They might look they would work with MEE6, howevever they **do not.**
 
 ## Table of contents
-
-
 ## List of custom commands
 
 <details>
@@ -33,6 +38,7 @@ These custom commands only work for the discord bot [YAGPDB.xyz](https://yagpdb.
 <summary><a href="./tutorials">Tutorials</a></summary>
 
 * execCC - A detailed guide
+* Database - An introduction
 </details>
 
 ## Important
@@ -70,12 +76,16 @@ This is the TL;DR version of this license:
 
 > This can also be found in [the learning resources](https://learn.yagpdb.xyz/the-custom-command-interface).
 
+## Documentation
+Each custom command has a leading comment in its code, they document the recommended trigger and trigger type as well as feature a small description of the custom command.<br/>
+Should it be a package of custom commands, these will be in one folder with a `README.md` documenting the procress you have to go through to set this system up.
+
+If you want to contribute to documenting custom command packages, go ahead, fork the repository and submit a pull request.
 ## Various
 Nothing much left, honestly.
 
 This repository follows for the larger part the git flow branching model, and the main branch is still called master.<br/>
-You won't find many custom commands, however those which are here are, in my opinion, quite useful and well documented.
-
+You won't find many custom commands, however those which are here are, in my opinion, quite useful and (hopefully) well documented.
 
 ## Useful Links
 * [YAGPDB documentation](https://docs.yagpdb.xyz)
