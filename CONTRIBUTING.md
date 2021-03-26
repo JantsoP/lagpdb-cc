@@ -1,10 +1,11 @@
 # Contributing
-First of all, thank you for considering a contribution! I appreciate any kind of contributions, be that a bugfix, a new command, a typo fix, or anything else.
+First of all, thank you for considering a contribution!<br/>
 However, please do take the time to read the following guidelines, as detailed below.
 
 ## Guidelines
 There's a few things you have to do before opening a pull request:
 
+## Custom Commands
 ### Leading Comment
 Add a brief comment at the start of your custom command code explaining what your command does and any setup required. 
 This should include the trigger & trigger type in addition to any restrictions recommended. 
@@ -55,7 +56,8 @@ When there is no configuration required, you of course don't need a configuratio
 
 ### Formatting
 Your code should be relatively readable. This of course does not mean it has to be indented beautifully or the like, just make sure people other than you can follow along easily.
-Should it be too long, don't worry - I'll run a [minifier ](https://jo3-l.github.io/cc-minifier/) (made by [Joe L.](https://github.com/jo3-l)) on it, as that does a fairly good job getting it down to length.
+Should it be too long, don't worry - I'll run a [minifier](https://jo3-l.github.io/cc-minifier/) (made by [Joe L.](https://github.com/jo3-l)) on it, as that does a fairly good job getting it down to length.  
+Further, you should be consistent with your formatting; Say you use camelCase for your in-code variables, then you should be using camelCase all the way through. The predefined constants of course are exempt. Just keep it consistent, as this will make it easier for others to follow along in your code.
 
 ## How do I request for my code to be added?
 After you've followed these steps, you are now ready for a PR!  Take a look at [this article](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) if you aren't quite familiar with PRs or need a refresher. We have a PR template in place that we recommend you follow.
@@ -64,12 +66,18 @@ If you're PRing one single command, all you have to do is adding it in the appro
 
 PRing a system of commands requires a few more steps: Find an appropiate folder and create a new folder containing only your custom commands plus a README.md documenting your custom commands.
 
-Please make all of your PRs against the `dev` branch.
+## Adding documentation
+If you feel like some steps are missing or could be more precise, feel free to submit changes to the `README.md` documentation files!<br/>
 
-You can ignore the file extension, I'll take care of that!
+Here is what you need to do:
+* Fork the repository
+* Do your changes
+* Submit a pull request
 
-Thanks for contributing!
-
+Please make sure that all files containing documentation are a `README.md`, otherwise GitHub won't recognize them. Further, there can only be one `README.md` per folder, so do make sure to just do changes in these files!
 
 ---
-These guildelines were adapted for the most part from [yagpdb-cc/yagpdb-cc](https://github.com/yagpdb-cc/yagpdb-cc/blob/master/CONTRIBUTING.md) made by (jo3-l)[https://github.com]/jo3-l].
+Please make all of your PRs against the `dev` branch.
+Thanks for contributing!
+
+These guidelines were adapted from [yagpdb-cc/yagpdb-cc](https://github.com/yagpdb-cc/yagpdb-cc/blob/master/CONTRIBUTING.md) made by [jo3-l](https://github.com/jo3-l).
