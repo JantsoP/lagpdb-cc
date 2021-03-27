@@ -114,3 +114,4 @@
         {{$fields =$fields.Append (sdict "name" "Reason for Kick" "value" $reason)}}
 		{{template "change" (sdict "messageID" $messageID "embed" $success "change" (sdict "title" "Command Finished" "description" (or (and $notMembers "Some users were not in the server, and thus could not be baned.") "") "fields" $fields))}}
 	{{end}}
+{{end}}
