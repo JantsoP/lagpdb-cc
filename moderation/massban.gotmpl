@@ -1,0 +1,122 @@
+{{/*
+    This cutom command allows you to ban multiple users at once. 
+    Usage is just like the native ban command, but it takes multiple user IDs.
+
+    Recommended trigger and trigger type: RegEx trigger with trigger `\A(?:\?|<@!?204255221017214977>)\s*m(?:ass)?ban(?:(?:\s+|\z)`.
+
+    Author: Luca Z. <https://github.com/l-zeuch>
+    Co-Author: DZ-TM <https://github.com/DZ-TM>
+    License: APGL-3.0
+    Copyright: (c) 2021
+*/}}
+
+{{/* CONFIG AREA START */}}
+{{$success:=sdict "color" 123456}}
+{{$fail:=sdict "color" 16718362}}
+{{$defaultReason:="Massban"}}
+{{$staffRoles:=cslice 724940896159793242}}
+
+{{/* CONFIG AREA END */}}
+
+{{/* do not edit below */}}
+{{$messageID:=0}}{{$fields:=cslice}}{{$boolean:=false}}{{$isStaff:=false}}{{$reason:=""}}{{$validReason:=true}}{{$c:=0}}{{$users:=cslice}}{{$notMembers:=cslice}}{{$oldMembers:=cslice}}
+{{define "change"}}
+	{{range $k,$v:=.change}}
+		{{- $.embed.Set $k $v -}}
+	{{end}}
+	{{if .messageID}}
+		{{editMessage nil .messageID (cembed .embed)}}
+	{{else}}
+		{{.Set "mID" (sendMessageRetID nil (cembed .embed))}}
+	{{end}}
+{{end}}
+{{range $staffRoles}}
+	{{- if hasRoleID .}}
+		{{- $isStaff =true}}
+	{{- end -}}
+{{end}}
+{{if not .ExecData}}
+	{{if $isStaff}}
+		{{if $x:=reFindAllSubmatches `([\d\D]*?)(?:\s+(-reason)(?:\s+([\d\D]*))?|\z)` .StrippedMsg}}
+			{{if $users =index $x 0 1|reFindAll `\d{17,19}`}}
+				{{range $i,$_:=$users}}
+					{{- if not $i}}
+						{{- $users =cslice}}
+					{{- end}}
+					{{- if not (in $users ($a:=toInt .))}}
+						{{- $users =$users.Append $a}}
+					{{- end -}}
+				{{end}}
+				{{if index $x 0 2}}
+					{{with index $x 0 3}}
+						{{$reason =.}}
+					{{else}}
+						{{$validReason =false}}
+						{{template "change" (sdict "embed" $fail "change" (sdict "title" "Syntax Error" "description" "A reason is required after the reason flag.\n```\n-ban <UserID/Mention> [UserID/Mention] ...\n-ban <UserID/Mention> [UserID/Mention] ... -reason <Reason:Text>\n```"))}}
+					{{end}}
+				{{else}}
+					{{$reason =$defaultReason}}
+				{{end}}
+				{{if $validReason}}
+					{{template "change" ($y:=sdict "embed" $success "change" (sdict "title" "Starting Process" "description" "0.00% finished. Please do not execute this command until this execution is over.."))}}
+					{{$messageID =$y.mID}}
+					{{$boolean =true}}
+				{{end}}
+			{{else}}
+				{{template "change" (sdict "embed" $fail "change" (sdict "title" "Syntax Error" "description" "No users were mentioned to ban.\n```\n-ban <UserID/Mention> [UserID/Mention] ...\n-ban <UserID/Mention> [UserID/Mention] ... -reason <Reason:Text>\n```"))}}
+			{{end}}
+		{{else}}
+			{{template "change" (sdict "embed" $fail "change" (sdict "title" "Syntax Error" "description" "Please ensure you do type something after the command.\n```\n-ban <UserID/Mention> [UserID/Mention] ...\n-ban <UserID/Mention> [UserID/Mention] ... -reason <Reason:Text>\n```"))}}
+		{{end}}
+	{{else}}
+		{{template "change" (sdict "embed" $fail "change" (sdict "title" "Not Staff" "description" "User is not staff and thus, cannot use the command."))}}
+	{{end}}
+{{else}}
+	{{$messageID =.ExecData.messageID}}
+	{{$users =cslice.AppendSlice .ExecData.users}}
+	{{$reason =.ExecData.reason}}
+	{{$notMembers =cslice.AppendSlice .ExecData.notMembers}}
+	{{$oldMembers =cslice.AppendSlice .ExecData.oldMembers}}
+	{{$boolean =true}}
+{{end}}
+{{if $boolean}}
+	{{range $users}}
+		{{- if gt 5 $c}}
+			{{- if getMember .}}
+				{{- $a:=execAdmin "ban" . $reason}}
+				{{- $oldMembers =$oldMembers.Append .}}
+			{{- else}}
+				{{- $notMembers =$notMembers.Append .}}
+			{{- end}}
+			{{- template "change" (sdict "messageID" $messageID "embed" $success "change" (sdict "title" "Processing Users" "description" (printf "%.2f%% finished. Please do not execute this command until this execution is over.." (add ($b:=len $notMembers) ($a:=len $oldMembers) (len $users)|fdiv (add 1 $a $b)|mult 100.0))))}}
+			{{- $c = add $c 1}}
+			{{- if gt (len $users) 1}}
+				{{- $users =slice $users 1}}
+			{{- else}}
+				{{- $users =cslice}}
+			{{- end}}
+		{{- end -}}
+	{{end}}
+	{{if $c}}
+		{{execCC .CCID nil 6 (sdict "users" $users "reason" $reason "oldMembers" $oldMembers "notMembers" $notMembers "messageID" $messageID)}}
+	{{else}}
+		{{range $i,$_:=$oldMembers}}
+			{{- if mod $i 40}}
+				{{- ($x:=len $fields|add -1|index $fields).Set "value" (print $x.value "<@" . ">\n")}}
+			{{- else}}
+				{{- $fields =$fields.Append (sdict "name" (or (and (not $i) "Successfully Kicked") "\u200b") "value" (print "<@" . ">\n"))}}
+			{{- end}}
+		{{- else}}
+			{{- $fields =$fields.Append (sdict "name" "Successfully Kicked" "value" "No users were banned from the server.") -}}
+		{{end}}
+		{{range $i,$_:=$notMembers}}
+			{{- if mod $i 40}}
+				{{- ($x:=len $fields|add -1|index $fields).Set "value" (print $x.value "<@" . ">\n")}}
+			{{- else}}
+				{{- $fields =$fields.Append (sdict "name" (or (and (not $i) "Not In Server") "\u200b") "value" (print "<@" . ">\n"))}}
+			{{- end -}}
+		{{end}}
+        {{$fields =$fields.Append (sdict "name" "Reason for Kick" "value" $reason)}}
+		{{template "change" (sdict "messageID" $messageID "embed" $success "change" (sdict "title" "Command Finished" "description" (or (and $notMembers "Some users were not in the server, and thus could not be baned.") "") "fields" $fields))}}
+	{{end}}
+    
