@@ -99,10 +99,10 @@
 			{{- if mod $i 40}}
 				{{- ($x:=len $fields|add -1|index $fields).Set "value" (print $x.value "<@" . ">\n")}}
 			{{- else}}
-				{{- $fields =$fields.Append (sdict "name" (or (and (not $i) "Successfully Kicked") "\u200b") "value" (print "<@" . ">\n"))}}
+				{{- $fields =$fields.Append (sdict "name" (or (and (not $i) "Successfully Banned") "\u200b") "value" (print "<@" . ">\n"))}}
 			{{- end}}
 		{{- else}}
-			{{- $fields =$fields.Append (sdict "name" "Successfully Kicked" "value" "No users were banned from the server.") -}}
+			{{- $fields =$fields.Append (sdict "name" "Successfully Banned" "value" "No users were banned from the server.") -}}
 		{{end}}
 		{{range $i,$_:=$notMembers}}
 			{{- if mod $i 40}}
