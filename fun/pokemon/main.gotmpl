@@ -28,10 +28,10 @@
     }}
     {{$ID := sendMessageNoEscapeRetID nil (complexMessage "content" (print .User.Mention) "embed" $embed)}}
     {{dbSetExpire .User.ID "whosthat" ($dict.Get (toInt64 $enemy)) (add $MAX_TIME 2)}}
+    {{execCC .CCID nil $MAX_TIME $ID}}
     {{else}}
         You're already trying to guess a pokémon!
     {{end}}
-    {{execCC .CCID nil $MAX_TIME $ID}}
 {{else}}
     {{if (dbGet .User.ID "whosthat").Value}}
         {{editMessage nil .ExecData (complexMessageEdit "content" (print "You're out of time, " .User.Mention ".\nThe pokémon was **" ($dict.Get (toInt64 $enemy)) "**.") "embed" nil)}}
