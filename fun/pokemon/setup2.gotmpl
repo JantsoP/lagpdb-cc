@@ -75,9 +75,9 @@
             801 "Poipole" 802 "Naganadel" 803 "Stakataka" 804 "Blacephalon" 805 "Zeraora" 
             806 "Meltan" 807 "Melmetal"}}
  
-{{range $k,$v := $addDict}}
-    {{$dict1.Set $k $v}}
-{{end}}
+{{range $k,$v := $addDict -}}
+    {{- $dict1.Set $k $v -}}
+{{- end}}
 {{dbSet 1 "Names" $dict1}}
 full setup done!
 {{deleteResponse}}
