@@ -1,0 +1,32 @@
+{{/*
+    This handy dandy command allows you to get the logs of a channel, without actually running it in the
+    target channel. Sometimes you want to secretly log messages, that's what this command does!
+
+    Recommended trigger and trigger type: RegEx trigger with trigger `\A(?:\-|<@!?204255221017214977>)\s*g(?:et)?logs?(?:\s+|\z)`
+
+    Usage: -getlogs <channel> [amount]
+
+    Author: Luca Z. <https://github.com/l-zeuch>
+    License: APGL-3.0
+    Copyright: (c) 2021
+*/}}
+
+{{$args := parseArgs 1 "```\nGetlogs <Channel:Channel> [Count:Whole Number]\n```\nInvalid arguments provided. No matching combo found." (carg "channel" "Target Channel") (carg "int" "Amount")}}
+
+{{define "getlogs"}}
+    {{$capture := .TemplateArgs}}
+    {{$capture.Set "logs" (execAdmin "log" $capture.amount)}}
+{{end}}
+
+{{$x := sendMessageRetID nil "Getting logs..."}}
+{{$data := sdict "amount" 100}}
+{{$channel := ($args.Get 0).ID}}
+{{if and ($args.IsSet 1)}}
+    {{$amount := ($args.Get 1)}}
+    {{/*250 messages is the max amount one execution of `log` can handle, less than 5 messages generally make no sense, also enforces a positive amount :^)*/}}
+    {{if and (le $amount 250) (ge $amount 5)}}
+        {{$data.Set "amount" $amount}}
+    {{end}}
+{{end}}
+{{sendTemplate $channel "getlogs" $data}}
+{{editMessage .Channel.ID $x (printf "Logs of <#%d>: %s" $channel $data.logs)}}
