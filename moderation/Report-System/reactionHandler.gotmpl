@@ -55,7 +55,7 @@
     {{range $k, $v := $report}}{{if eq (kindOf $v true) "struct"}}{{$report.Set $k (structToSdict $v)}}{{end}}{{end}}
     {{if and $isMod (reFindAllSubmatches (toString $.User.ID) $embed.Footer.Text) $embed.Author $embed.Footer}}
         {{with $report}}
-            {{$author := (index (reFindAllSubmatches `\A<@!?(\d{17,19})>` .Description) 0 1|toInt|getMember).User}}
+            {{$author := (getMember (reFind `\A<@!?\d{17,19}>` .Description)).User}}
             {{.Set "Footer" .Footer}}
             {{.Set "Author" .Author}}
             {{$data := sdict "color" 0}}{{/* 'Empty' sdict as data to prevent errors */}}
