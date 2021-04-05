@@ -63,6 +63,7 @@ This is the TL;DR version of this license:
 * You must disclose the source (this repository).
 * You must redistribute the software under the same license.
 * You must state changes made to the software.
+* You must make modifications made to the software available.
 * I am not liable for any damage.
 * I am not giving any warranty on the custom commands.
 
