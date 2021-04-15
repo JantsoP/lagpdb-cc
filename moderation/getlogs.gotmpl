@@ -11,22 +11,45 @@
     Copyright: (c) 2021
 */}}
 
-{{$args := parseArgs 1 "```\nGetlogs <Channel:Channel> [Count:Whole Number]\n```\nInvalid arguments provided. No matching combo found." (carg "channel" "Target Channel") (carg "int" "Amount")}}
-
 {{define "getlogs"}}
-    {{$capture := .TemplateArgs}}
-    {{$capture.Set "logs" (execAdmin "log" $capture.amount)}}
+    {{$temp := .TemplateArgs}}
+    {{$temp.Set "capture" (execAdmin "log" $temp.amount)}}
+    {{sleep 1}}
 {{end}}
 
-{{$x := sendMessageRetID nil "Getting logs..."}}
-{{$data := sdict "amount" 100}}
-{{$channel := ($args.Get 0).ID}}
-{{if and ($args.IsSet 1)}}
-    {{$amount := ($args.Get 1)}}
-    {{/*250 messages is the max amount one execution of `log` can handle, less than 5 messages generally make no sense, also enforces a positive amount :^)*/}}
-    {{if and (le $amount 250) (ge $amount 5)}}
-        {{$data.Set "amount" $amount}}
+{{$args := parseArgs 0 "" (carg "channel" "Target Channel") (carg "int" "Count")}}
+
+{{$err := ""}}
+{{$amount := 100}}
+{{$templateData := sdict}}
+{{$channelID := .Channel.ID}}
+
+{{if ($args.IsSet 0)}}
+    {{$channelID = ($args.Get 0).ID}}
+{{else if ($args.IsSet 1)}}
+    {{$amount = $args.Get 1}}
+    {{if or (gt $amount 250) (lt $amount 2)}}
+        {{$err = "**Invalid arguments provided:**\nCount is too big/small. (has to be within 2 - 250)"}}
     {{end}}
 {{end}}
-{{sendTemplate $channel "getlogs" $data}}
-{{editMessage .Channel.ID $x (printf "Logs of <#%d>: %s" $channel $data.logs)}}
+
+{{$embed := sdict "footer" (sdict "text" (printf "Requested by %s" .User.String) "icon_url" (.User.AvatarURL "256")) "timestamp" currentTime}}
+
+{{if not $err}}
+    {{$templateData.Set "amount" $amount}}
+    {{$embed.Set "description" "Getting logs..."}}
+    {{$temp := sendMessageRetID nil (cembed $embed)}}
+    {{sendTemplate $channelID "getlogs" $templateData}}
+    {{if reFind `blacklisted` $templateData.capture}}
+        {{$embed.Set "description" "**Failed creating logs:**\nChannel is blacklisted from creating logs.\nThis can be changed on the control panel."}}
+        {{$embed.Set "color" 0xff0000}}
+    {{else}}
+        {{$embed.Set "description" (printf "Last %d messages in <#%d>: [Logs](%s)" $amount $channelID $templateData.capture)}}
+        {{$embed.Set "color" 0x00ff00}}
+    {{end}}
+    {{editMessage nil $temp (complexMessageEdit "embed" $embed)}}
+{{else}}
+    {{$embed.Set "description" $err}}
+    {{$embed.Set "color" 0xff0000}}
+    {{sendMessage nil (cembed $embed)}}
+{{end}}
