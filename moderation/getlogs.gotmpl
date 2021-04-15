@@ -40,7 +40,7 @@
     {{$embed.Set "description" "Getting logs..."}}
     {{$temp := sendMessageRetID nil (cembed $embed)}}
     {{sendTemplate $channelID "getlogs" $templateData}}
-    {{if reFind `blacklisted` $templateData.capture}}
+    {{if inFold $templateData.capture "blacklisted"}}
         {{$embed.Set "description" "**Failed creating logs:**\nChannel is blacklisted from creating logs.\nThis can be changed on the control panel."}}
         {{$embed.Set "color" 0xff0000}}
     {{else}}
