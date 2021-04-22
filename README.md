@@ -32,13 +32,7 @@ These custom commands only work for the discord bot [YAGPDB.xyz](https://yagpdb.
 <summary><a href="./moderation">Moderation</a></summary>
 
 * Report System v2
-</details>
-
-<details>
-<summary><a href="./tutorials">Tutorials</a></summary>
-
-* execCC - A detailed guide
-* Database - An introduction
+* Getlogs command
 </details>
 
 ## Important
