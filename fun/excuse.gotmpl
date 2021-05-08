@@ -4,7 +4,7 @@
 
     Recommended trigger and trigger type: Command trigger with `Excuse` trigger
 
-    Usage:  -excuse
+    Usage:  -excuse [Amount]
 
     Idea by mrbentarikau
 
@@ -28,5 +28,36 @@
                     "Dump" "Crashdump" "Stackdump" "Problem" "Lockout"}}
 {{$fourthSlice := cslice "Error" "Problem" "Warning" "Signal" "Flag"}}
 
+{{$args := parseArgs 0 "" (carg "int" "Amount")}}
 
-{{joinStr " " (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))) (index $fourthSlice (randInt (len $fourthSlice)))}}
+{{$out := "You should never see this error."}}
+{{$title := "Your super nifty excuse:"}}
+{{if $args.IsSet 0}}
+    {{$title = "Your super nifty excuses:"}}
+    {{$amnt := $args.Get 0}}
+    {{if or (lt $amnt 2) (gt $amnt 10)}}
+        {{$out = "Amount is too small/large! (min 2, max 10)"}}
+    {{else}}
+        {{if eq (randInt 3) 2}}
+            {{$out = (printf "%02d. %s %s %s %s" 1 (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))) (index $fourthSlice (randInt (len $fourthSlice))))}}
+        {{else}}
+            {{$out = (printf "%02d. %s %s %s" 1 (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))))}}
+        {{end}}
+        {{range seq 0 (add $amnt -1)}}
+            {{if eq (randInt 3) 2}}
+                {{- $out = (printf "%s\n%02d. %s %s %s %s" $out (add . 2) (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))) (index $fourthSlice (randInt (len $fourthSlice)))) -}}
+            {{else}}
+                {{- $out = (printf "%s\n%02d. %s %s %s" $out (add . 2) (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice)))) -}}
+            {{end}}
+        {{end}}
+    {{end}}
+{{else}}
+    {{if eq (randInt 3) 2}}
+        {{$out = (printf "%02d. %s %s %s %s" 1 (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))) (index $fourthSlice (randInt (len $fourthSlice))))}}
+    {{else}}
+        {{$out = (printf "%s %s %s" (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))))}}
+    {{end}}
+{{end}}
+{{$col := randInt 16777216}}
+{{$embed := cembed "author" (sdict "name" $title) "description" $out "footer" (sdict "text" (printf "Requested by: %s" .User.String) "icon_url" (.User.AvatarURL "512")) "color" $col}}
+{{sendMessage nil $embed}}
