@@ -55,7 +55,7 @@
     {{if eq (randInt 3) 2}}
         {{$out = (printf "%02d. %s %s %s %s" 1 (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))) (index $fourthSlice (randInt (len $fourthSlice))))}}
     {{else}}
-        {{$out = (printf "%02d. %s %s %s" (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))))}}
+        {{$out = (printf "%02d. %s %s %s" 1 (index $firstSlice (randInt (len $firstSlice))) (index $secondSlice (randInt (len $secondSlice))) (index $thirdSlice (randInt (len $thirdSlice))))}}
     {{end}}
 {{end}}
 {{$col := randInt 16777216}}
