@@ -1,7 +1,12 @@
 # Fun
-This folder features commands related to games and fun! <br/>
-Some might be in a custom command package compiled in one folder, and some might just use one single slot. Either way, take a look around!
+Featuring in this folder you'll find custom commands which are there, well, for fun. Don't take them too serious.
+
+As usual, there's a leading comment explaining the setup of the custom command. If it's a sytem of commands to use, they'll be in one folder along some documentation.
 
 ## List of custom commands
-### Pokemon
-Made by `StinkySlinky#8071` on Discord. Please join [The support server](https://discord.com/invite/5uVyq2E) and ping them, if you have any issues with this custom command package.
+
+- [pokemon](./pokemon)<br>
+    Battle against the time, try to guess the pokemon!
+
+- [excuse](excuse.gotmpl)<br>
+    Need a quick excuse for an issue? Use this command and be guaranteed to get your deserved peace!

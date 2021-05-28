@@ -1,0 +1,21 @@
+on:
+  pull_request:
+    branches:
+      - master
+  
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    name: Comment on PR
+    steps:
+      - name: Comment
+        uses: thollander/actions-comment-pull-request@master
+        with:
+          message: |
+            Hey @${{ github.actor }}!
+            First of all, thank you for your pull request, however I noticed that you want to merge it into the default branch, `master`.
+            As only thoroughly tested code appears on this repository's default branch, please change the base branch to `dev`, as [CONTRIBUTING.md](../../CONTRIBUTING.md) states:
+            > Please open all of your pull requests against the `dev` branch
+
+            Thanks in advance and happy hacking!
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

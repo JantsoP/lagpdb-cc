@@ -1,9 +1,6 @@
-**A one-line summary what this PR does**
+**State what this pull request adds and why it should be merged:**
 
-**Your detailed argument and description of your addition**
 
----
-**Status:**
-- [ ] Code changes have been tested on the official instance of yagpdb
-- [ ] There are no code changes
-- [ ] I've read the [contributing guide](../CONTRIBUTING.md)
+**Status**
+- [ ] Code has been tested on an official instance of YAGPDB, or there are no code changes
+- [ ] I've read and understood the [contribution guidelines](../CONTRIBUTING.md)

@@ -8,83 +8,45 @@
 <a href="https://github.com/l-zeuch"><img src="https://img.shields.io/static/v1?label=Maintainer&message=l-zeuch&color=1f8b4c&style=for-the-badge"></a>
 </div>
 
-## About this repository
-A collection of high quality and well documented custom commands to be used in your server.
-These custom commands only work for the discord bot [YAGPDB.xyz](https://yagpdb.xyz), as they were exclusively written for that specific bot. They might look they would work with MEE6, howevever they **do not.**
+## Adding these Custom Commands
 
-## Table of contents
-## List of custom commands
+This assumes you know how to create a custom command, if you aren't too familiar with that or just need a refresher, [this article](https://learn.yagpdb.xyz/the-custom-command-interface) explains it well.
 
-<details>
-<summary><a href="./misc">Miscellaneous</a></summary>
+This repository is separated into categories. Some custom commands are standalone, there are, however, also "systems" which require you to add all scripts - They will be collected in an individual folder, to signal that, as well as accompanied by a `README.md` file documenting the installation process and usage of said system.
 
-* bookmark
-* reaction bookmark
-</details>
+When you find a custom command you wish to add, the file will have a leading comment explaining what it does and the recommended trigger type & trigger value. You can add it in the YAGPDB dashboard with these attributes.
 
-<details>
-<summary><a href="./fun">Fun</a></summary>
+## Contributing
+If you wish to contribute in any way, please make sure to read [CONTRIBUTING.md](CONTRIBUTING.md) first, it will explain what you need to do!
 
-* Pokemon custom command package
-</details>
-
-<details>
-<summary><a href="./moderation">Moderation</a></summary>
-
-* Report System v2
-* Getlogs command
-</details>
+After you've read the guidelines, fork the repository, make your changes and open a pull request.
 
 ## Important
-As quite a lot of work is put into the creation of a custom command, starting from the very idea to the final product, please show some appreciation by sharing and maybe starring this repository and keeping the leading comment in the custom command response:
+As quite a lot of effort goes into creating these custom commands, please credit the author of each script. For that, there is a leading comment (which also explains usage of the custom command), so please keep it in there (unless you are specifically told to remove it). 
 
+###### Example Header
 ```
-    Author: Luca Z. <https://github.com/l-zeuch>
-    License: APGL-3.0
-    Copyright: (c) 2021
+Copyright (c): Jane Doe & John Smith; 2021
+Source: <https://github.com/l-zeuch/lagpdb-cc>
+Licensed under the terms of BSD-3-Clause
 ```
-> Proper credit will be given should the author differ.
 
-Should you not find such a block in the leading comment, you are free to use it without restrictions and limitations.
+The license essentially condenses down to these three conditions:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the disclaimer.
 
-### How does the License work?
-The [license](LICENSE) is the GNU Affero General Public License v3.0. As that is quite a long name, people decided that the short version is `AGPL-3.0`, as seen in the small block above.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the disclaimer in the documentation and/or other materials provided with the distribution.
 
-This is the TL;DR version of this license:
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 
-* You may use it for commerical use, modification, distribution, patent use, and private use.
-* You must state license and license holder (that would be AGPL-3.0 and the author of the custom command).
-* You must disclose the source (this repository).
-* You must redistribute the software under the same license.
-* You must state changes made to the software.
-* You must make modifications made to the software available.
-* I am not liable for any damage.
-* I am not giving any warranty on the custom commands.
-
-> Although the last two points are technically how this license works, I give a limited warranty on a working and safe custom command.
-
-## Adding a custom commands
-1. Go to the [dashboard](https://yagpdb.xyz/manage), log in, select your server.
-2. Navigate to `Core > Custom commands`
-3. Create a new custom command
-4. Follow the setup as described in the heading comment of each custom command script you find here.
-
-> This can also be found in [the learning resources](https://learn.yagpdb.xyz/the-custom-command-interface).
-
-## Documentation
-Each custom command has a leading comment in its code, they document the recommended trigger and trigger type as well as feature a small description of the custom command.<br/>
-Should it be a package of custom commands, these will be in one folder with a `README.md` documenting the procress you have to go through to set this system up.
-
-If you want to contribute to documenting custom command packages, go ahead, fork the repository and submit a pull request.
-## Various
-Nothing much left, honestly.
-
-This repository follows for the larger part the git flow branching model, and the main branch is still called master.<br/>
-You won't find many custom commands, however those which are here are, in my opinion, quite useful and (hopefully) well documented.
+### Disclaimer
+The YAGPDB developer, staff, and/or support are not responsible for any difficulties caused by these custom commands.
+These commands are not guaranteed to be working, use them at your own risk.
 
 ## Useful Links
-* [YAGPDB documentation](https://docs.yagpdb.xyz)
-* [YAGPDB Learning resources](https://learn.yagpdb.xyz)
-* [The support server](https://discord.com/invite/5uVyq2E)
----
-Copyright (c) 2020, Luca Z.
+- YAGPDB [Documentation](https://docs.yagpdb.xyz)
+- YAGPDB [Learning resources](https://learn.yagpdb.xyz)
+- YAGPDB [Support Server](https://discord.com/invite/4udtcA5)
+
+----
+Copyright (c): Luca Zeuch, 2021<br/>
+3-Clause BSD License.
