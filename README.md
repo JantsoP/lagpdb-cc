@@ -22,16 +22,21 @@ If you wish to contribute in any way, please make sure to read [CONTRIBUTING.md]
 After you've read the guidelines, fork the repository, make your changes and open a pull request.
 
 ## Important
-As quite a lot of effort goes into creating these custom commands, please credit the author of each script. For that, there is a leading comment (which also explains usage of the custom command), so please keep it in there. This should be pretty clear. 
-
-The part you're **required** to keep in looks like the following.
+As quite a lot of effort goes into creating these custom commands, please credit the author of each script. For that, there is a leading comment (which also explains usage of the custom command), so please keep it in there (unless you are specifically told to remove it). 
 
 ###### Example Header
 ```
-    Copyright (c): John Smith, 2021
-    Repository: https://github.com/l-zeuch/lagpdb-cc
-    License: APGL-3.0
+Copyright (c): Jane Doe & John Smith; 2021
+Source: <https://github.com/l-zeuch/lagpdb-cc>
+Licensed under the terms of BSD-3-Clause
 ```
+
+The license essentially condenses down to these three conditions:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 
 ### Disclaimer
 The YAGPDB developer, staff, and/or support are not responsible for any difficulties caused by these custom commands.
@@ -44,4 +49,4 @@ These commands are not guaranteed to be working, use them at your own risk.
 
 ----
 Copyright (c): Luca Zeuch, 2021<br/>
-GNU Affero General Public License, Version 3.0.
+3-Clause BSD License.
