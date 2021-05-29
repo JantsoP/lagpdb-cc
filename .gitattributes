@@ -1,2 +1,2 @@
 *.gotmpl linguist-language=Go
-*.md linguist-documentation=true
+*.md linguist-language=HTML
