@@ -21,8 +21,52 @@ If you wish to contribute in any way, please make sure to read [CONTRIBUTING.md]
 
 After you've read the guidelines, fork the repository, make your changes and open a pull request.
 
-## Important
-As quite a lot of effort goes into creating these custom commands, please credit the author of each script. For that, there is a leading comment (which also explains usage of the custom command), so please keep it in there (unless you are specifically told to remove it). 
+For requests, questions, or problems, open an issue over at the issues tab.
+
+Thanks for contributing and happy hacking!
+
+## List of Custom Commands
+| ℹ This is by no means an exhaustive list, nor is it meant to be. See the individual folders for details. |
+| ---- |
+
+<details>
+<summary>Fun</summary>
+
+* Pokemon
+    > A system of custom commands bringing the fun of guessing the Pokemon from your Gameboy to your Discord!
+* Excuse
+    > Need an excuse for a technical problem? This custom command got you covered!
+</details>
+
+<details>
+<summary>Miscellaneous</summary>
+
+* Bookmark
+    > A small Custom Command for bookmarking messages within context, but without having to pin them.
+* Reactionbookmark
+    > Same as above, but even faster done with a reaction!
+</details>
+
+<details>
+<summary>Moderation</summary>
+
+* Report-System
+    > A state-of-the-art system bringing more functionality to the inbuilt report command.
+* Getlogs
+    > A small code snippet to silently get the logs of a channel.
+</details>
+
+## Legal Mumbo Jumbo
+### Disclaimers 
+1. The YAGPDB developer, staff, and/or support are not responsible for any difficulties caused by these custom commands.
+These commands are not guaranteed to be working, use them at your own risk.
+
+2. When altering a script beyond reasonable modifications, so that it can no longer be confidently correlated to the base design, it is to be understood as predominantly being the user's design and may not receive further support.
+
+3. All scripts in this repository are provided as found, in a manner by which they are not meant to cause offense of any kind.
+
+### Leading Comment
+As quite a lot of effort goes into creating these custom commands, please credit the author of each script. For that, there is a leading comment, which not only discloses the author, source and license, but also gives you crucial information about the usage and functionality of this custom command. You're doing yourself a favour with keeping it in.
 
 ###### Example Header
 ```
@@ -31,16 +75,15 @@ Source: <https://github.com/l-zeuch/lagpdb-cc>
 Licensed under the terms of BSD-3-Clause
 ```
 
-The license essentially condenses down to these three conditions:
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the disclaimer.
+### License
+This repository is licensed under the terms of the 3-Clause BSD License. You can view the full terms [here](LICENSE "BSD-3-Clause").
 
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the disclaimer in the documentation and/or other materials provided with the distribution.
+The license essentially condenses down to these three conditions:
+1. Redistributions of source code must retain the copyright notice, this list of conditions and the disclaimer.
+
+2. Redistributions in binary form must reproduce the copyright notice, this list of conditions and the disclaimer in the documentation and/or other materials provided with the distribution.
 
 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-### Disclaimer
-The YAGPDB developer, staff, and/or support are not responsible for any difficulties caused by these custom commands.
-These commands are not guaranteed to be working, use them at your own risk.
 
 ## Useful Links
 - YAGPDB [Documentation](https://docs.yagpdb.xyz)
