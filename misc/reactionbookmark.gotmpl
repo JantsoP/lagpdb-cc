@@ -2,23 +2,25 @@
     This custom command allows users to bookmark another user's message by reacting to it
     
     Usage:
-      React to a message with 🔖
+      React to a message with the configured emoji. (Default 🔖)
       
     Recommended trigger: Reaction (Added only)
     
     Copyright (c): TheHolyWatermelon <https://github.com/TheHolyWaterme1on>, 2021
     Source: <https://github.com/l-zeuch/lagpdb-cc>
     Licensed under the terms of BSD-3-Clause
-*\}}
+*/}}
 
-{{/*Configuration */}}
+{{/* Configuration start */}}
+{{$emoji := "🔖"}} {{/* The emoji used to trigger a bookmark. use the emoji name when using a custom emoji. */}}
+{{/* Configuration end */}}
+
+{{/* Actual Code */}}
+{{if (eq .Reaction.Emoji.Name )}}
 {{$channel := .Reaction.ChannelID}}
 {{$message := .Reaction.MessageID}}
 {{$guild := .Reaction.GuildID}}
 {{$author := (print .ReactionMessage.Author.Mention)}}
-
-{{/* Actual Code */}}
-{{if (eq .Reaction.Emoji.Name "🔖")}}
 {{$link := (printf "https://discord.com/channels/%d/%d/%d" $guild $channel $message)}}
 {{$embed := (cembed
         "title" "Bookmark"
