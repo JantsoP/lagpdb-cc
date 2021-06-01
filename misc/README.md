@@ -36,4 +36,4 @@ Don't forget to save, and keep your DMs to YAGPDB open.
 
 #### Gallery
 ###### Bookmark Message
-![demo reactionbookmark](../assets/reactionbookmark.png)
+![demo reactionbookmark](../assets/reactionbookmark-demo.png)
