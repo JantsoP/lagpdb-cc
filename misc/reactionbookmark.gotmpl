@@ -16,10 +16,12 @@
 {{/* Configuration end */}}
 
 {{/* Actual Code */}}
-{{if (eq .Reaction.Emoji.Name )}}
-{{$channel := .Reaction.ChannelID}}
-{{$message := .Reaction.MessageID}}
-{{$guild := .Reaction.GuildID}}
+{{if and (eq .Reaction.Emoji.Name $emoji) .ReactionAdded}}
+
+{{$channel := .Channel.ID}}
+{{$message := .Message.ID}}
+{{$guild := .Guild.ID}}
+
 {{$author := (print .ReactionMessage.Author.Mention)}}
 {{$link := (printf "https://discord.com/channels/%d/%d/%d" $guild $channel $message)}}
 {{$embed := (cembed
