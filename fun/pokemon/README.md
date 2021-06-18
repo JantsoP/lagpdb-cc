@@ -1,4 +1,4 @@
-## How to use the commands:
+# How to use the commands
 
 **READ ALL COMMENTS IN THE CODE BEFORE USING THE SYSTEM!**
 
@@ -21,7 +21,7 @@ If you run out of time, you'll see this:
 1. (currently) Does not support generation 8 pokémon
 1. Some pokémon may be spelt incorrectly, leading to a correct answer being registered as incorrect.
 
----
+----
 Copyright (c) 2021: StinkySlinky#8071
 
 Join [The support server](https://discord.com/invite/5uVyq2E) if you are experiencing issues or are getting stuck.

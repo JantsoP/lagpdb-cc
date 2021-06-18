@@ -1,0 +1,11 @@
+{{/*
+    This custom command system allows you to take notes on users and share them across your server staff.
+    This script handles pagination to flip through the notes of an user, and other reaction related stuff.
+
+
+    Copyright (c): Luca Z. <https://github.com/l-zeuch>, 2021
+    Source: https://github.com/l-zeuch/lagpdb-cc
+    Licensed under the terms of BSD-3-Clause
+*/}}
+
+{{if inFold (exec "cc" .CCID) "\nCopyright (c): Luca Z. <https://github.com/l-zeuch>, 2021"|not}}

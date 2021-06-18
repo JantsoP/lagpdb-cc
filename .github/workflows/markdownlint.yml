@@ -1,0 +1,21 @@
+name: CI / Markdown
+on: [push, pull_request]
+
+jobs:
+  markdown-lint:
+    runs-on: ubuntu-latest
+    name: Lint Markdown Files
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - id: mdl
+        name: Run Markdownlinter
+        uses: actionshub/markdownlint@main
+      - name: Comment Suggestions
+        if: ${{ github.event_name == 'pull_request' && failure() }}
+        run: |
+          curl -X POST -H "Accept: application/vnd.github.v3+json" -H 'authorization: Bearer ${{ secrets.SUPER_TOKEN }}' https://api.github.com/repos/l-zeuch/lagpdb-cc/issues/${{ github.event.number }}/comments --data '{"body": ${{ toJSON(steps.mdl.outputs.output) }}"}'
+      - name: Comment Suggestions
+        if: ${{ github.event_name == 'push' && failure() }}
+        run: |
+          curl -X POST -H "Accept: application/vnd.github.v3+json" -H 'authorization: Bearer ${{ secrets.SUPER_TOKEN }}' https://api.github.com/repos/l-zeuch/lagpdb-cc/commits/${{ github.sha }}/comments --data '{"body": ${{ toJSON(steps.mdl.outputs.output) }}"}'
