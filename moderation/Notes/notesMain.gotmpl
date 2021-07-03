@@ -1,10 +1,69 @@
 {{/*
-    This custom command system allows you to take notes on users and share them across your server staff.
-    This script handles the main stuff, such as getting, setting, or deleting notes.
+	This custom command system allows you to take notes on users and share them across your server staff.
+	This script handles the main stuff, such as getting, setting, or deleting notes.
 
-    Copyright (c): Luca Z. <https://github.com/l-zeuch>, 2021
-    Source: https://github.com/l-zeuch/lagpdb-cc
-    Licensed under the terms of BSD-3-Clause
+	Copyright (c): Luca Z. <https://github.com/l-zeuch>, 2021
+	Source: https://github.com/l-zeuch/lagpdb-cc
+	Licensed under the terms of BSD-3-Clause
 */}}
+{{/* CONFIGURATION START */}}
+{{$permission := "ManageMessages"}}
+{{$mod_roles := cslice }}
+{{/* CONFIGURATION END */}}
 
-{{if inFold (exec "cc" .CCID) "\nCopyright (c): Luca Z. <https://github.com/l-zeuch>, 2021"|not}}
+{{/* ACTUAL CODE, DO NOT TOUCH */}}
+{{$query := dict "Flags" (dict "-d" "Duration" "-page" "Page") "Args" .CmdArgs}}
+{{$subcommand := index $query.Out.Positional 0}}
+{{$note := }}
+
+{{$err := ""}}
+{{$valid_subcommands := cslice "set" "get" "del" "delall"}}
+
+{{$user := (getMember (index $query.Out.Positional 1)).User}}
+{{if inFold (exec "cc" .CCID) "\nCopyright (c): Luca Z. <https://github.com/l-zeuch>, 2021"}}
+	{{if $user}}
+		{{if inFold $valid_subcommands $subcommand}}
+			{{if inFold "set" $subcommand}}
+				{{$db_old := dbGet "notes" $user.ID}}
+				{{if $db_old}}
+					{{$db_old_split := split $db_old.Value "\n"}}
+					{{$last_id := reFind `\A\d+\b` (index $db_old_split (sub (len $db_old_split) 1))|toInt}}
+					{{dbSet "notes" $user.ID (printf "%s\n%d %s: %s" $db_old.Value (add $last_id 1) (currentTime.Format "Mon 02 Jan 15:04") $note)}}
+				{{else}}
+					{{dbSet "notes" $user.ID (printf "%d %s: %s" 1 (currentTime.Format "Mon 02 Jan 15:04") $note)}}
+				{{end}}
+			{{end}}
+		{{else}}
+			{{$err = printf "`%s` is not a valid subcommand!\nValid subcommands are: `%s`" $subcommand (joinStr "`, `" $valid_subcommands)}}
+		{{end}}
+	{{else}}
+		{{$err = "Member not found."}}
+	{{end}}
+{{else}}
+	{{addReactions "a:loading:833420211075940422"}}
+{{end}}
+
+{{if $err}}
+	{{$err_embed := cembed "description" $err "author" (sdict "name" "An Error Occurred:") "color" 0xff0000}}
+	{{sendMessage nil $err_embed}}
+{{end}}
+
+{{/* Helper Functions */}}
+{{define "parseFlags"}}
+	{{.Set "Out" (sdict "Positional" (cslice) "Flags" (dict))}}
+
+	{{$curFlag := ""}}
+	{{$lastIdx := sub (len .Args) 1}}
+	{{range $i, $arg := .Args}}
+		{{- if $curFlag}}
+			{{- $.Out.Flags.Set $curFlag $arg}}
+			{{- $curFlag = ""}}
+		{{- else if and ($id := $.Flags.Get $arg) (ne $i $lastIdx)}}
+			{{- $curFlag = $id}}
+		{{- else if $id := $.Switches.Get $arg}}
+			{{- $.Out.Flags.Set $id true}}
+		{{- else}}
+			{{- $.Out.Set "Positional" ($.Out.Positional.Append $arg)}}
+		{{- end -}}
+	{{end}}
+{{end}}
