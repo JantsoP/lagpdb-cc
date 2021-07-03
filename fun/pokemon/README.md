@@ -15,11 +15,11 @@ If you run out of time, you'll see this:
 
 ![You're out of time message](https://cdn.discordapp.com/attachments/817166446353973299/823989596764504144/unknown.png)
 
-## Negative effects:
+## Negative effects
 
 1. Requires 3 database entries (only 1 is permanent, the other 2 are deleted when an answer is correct or time runs out)
-1. (currently) Does not support generation 8 pokémon
-1. Some pokémon may be spelt incorrectly, leading to a correct answer being registered as incorrect.
+2. (currently) Does not support generation 8 pokémon
+3. Some pokémon may be spelt incorrectly, leading to a correct answer being registered as incorrect.
 
 ----
 Copyright (c) 2021: StinkySlinky#8071
