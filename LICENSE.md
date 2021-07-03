@@ -1,4 +1,5 @@
-# 3-Clause BSD License
+3-Clause BSD License
+====================
 
 Copyright 2021 Luca Zeuch
 
