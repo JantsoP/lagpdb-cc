@@ -4,7 +4,6 @@
 <div align="center">
 <a href="https://github.com/l-zeuch/lagpdb-cc/stargazers/"><img src="https://img.shields.io/github/stars/l-zeuch/lagpdb-cc?logo=github&style=for-the-badge"></a>
 <img src="https://img.shields.io/github/repo-size/l-zeuch/lagpdb-cc?logo=github&style=for-the-badge">
-<a href="https://github.com/l-zeuch/lagpdb-cc/blob/master/LICENSE"><img src="https://img.shields.io/github/license/l-zeuch/lagpdb-cc?style=for-the-badge"></a>
 <a href="https://github.com/l-zeuch"><img src="https://img.shields.io/static/v1?label=Maintainer&message=l-zeuch&color=1f8b4c&style=for-the-badge"></a>
 </div>
 
