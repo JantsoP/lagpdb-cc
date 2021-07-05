@@ -7,37 +7,60 @@
 	Licensed under the terms of BSD-3-Clause
 */}}
 {{/* CONFIGURATION START */}}
-{{$permission := "ManageMessages"}}
-{{$mod_roles := cslice }}
+{{$BASE_PERMISSION := "ManageMessages"}}
+{{$NUKE_PERMISSION := "ManageServer"}}
 {{/* CONFIGURATION END */}}
 
 {{/* ACTUAL CODE, DO NOT TOUCH */}}
 {{$query := dict "Flags" (dict "-d" "Duration" "-page" "Page") "Args" .CmdArgs}}
 {{$subcommand := index $query.Out.Positional 0}}
-{{$note := }}
+{{$user := (getMember (index $query.Out.Positional 1)).User}}
+{{$note := slice $query.Out.Positional 2|joinStr " "}}
+
+{{$valid_subcommands := cslice "help" "set" "get" "del" "delall" "nuke"}}
+{{$subcommands_string := joinStr "`, `" $valid_subcommands.StringSlice}}
+
+{{$temp := index (reFindAllSubmatches `.*?: \x60(.*)\x60\z` (execAdmin "prefix")) 0 1}}
+{{$prefix := reReplace `[\.\[\]\-\?\!\\\*\{\}\(\)\|\+]` $temp `\${0}`}}
 
 {{$err := ""}}
-{{$valid_subcommands := cslice "set" "get" "del" "delall"}}
 
-{{$user := (getMember (index $query.Out.Positional 1)).User}}
+{{$helper_embed := cembed "title" "Notes Help Page"
+	"fields" (cslice
+		(sdict "name" "• Basic Usage" "value" (printf "Valid subcommands are:`%s`.\nIf none are given, this page is shown instead.```%snotes <subcommand> (Arguments)```" $subcommands_string $prefix ))
+		(sdict "name" "• Help" "value" (printf "Shows this text!```%snote help```" $prefix))
+		(sdict "name" "• Set" "value" (printf "Sets a note on an user.```%snote set <User:Mention/ID> <Note:Text>```" $prefix))
+		(sdict "name" "• Get" "value" (printf "Gets all notes of an user.```%snote get <User:Mention/ID>```" $prefix))
+		(sdict "name" "• Del" "value" (printf "Deletes a given note of given user.```%snote del <User:Mention/ID> <NoteID:Whole Number>```The note ID can be obtained by running the `get` subcommand. The deleted note will be shown, in case you accidentally deleted the wrong one." $prefix))
+		(sdict "name" "• Delall" "value" (printf "Deletes all notes of the given user.\n:warning: **This action is irreversible.** :warning:```%snote delall <User:Mention/ID>```" $prefix))
+		(sdict "name" "• Nuke" "value" (printf "Deletes all entries for all notes. Useful when you wish to remove this system, or want to clean it up.\n:warning: **This action is irreversible. Don't run it \"to test\". It will work.** :warning:```%snote nuke```" $prefix))
+	)
+}}
+
+{{$has_perms = (in (split (index (split (exec "viewperms") "\n") 2) ", ") $BASE_PERMISSION)}}
+
 {{if inFold (exec "cc" .CCID) "\nCopyright (c): Luca Z. <https://github.com/l-zeuch>, 2021"}}
-	{{if $user}}
-		{{if inFold $valid_subcommands $subcommand}}
-			{{if inFold "set" $subcommand}}
+	{{if or (inFold "help" $subcommand) (not $subcommand)}}
+		{{sendMessage nil $helper_embed}}
+	{{else}}
+		{{if $user}}
+			{{if inFold $valid_subcommands $subcommand}}
 				{{$db_old := dbGet "notes" $user.ID}}
-				{{if $db_old}}
-					{{$db_old_split := split $db_old.Value "\n"}}
-					{{$last_id := reFind `\A\d+\b` (index $db_old_split (sub (len $db_old_split) 1))|toInt}}
-					{{dbSet "notes" $user.ID (printf "%s\n%d %s: %s" $db_old.Value (add $last_id 1) (currentTime.Format "Mon 02 Jan 15:04") $note)}}
-				{{else}}
-					{{dbSet "notes" $user.ID (printf "%d %s: %s" 1 (currentTime.Format "Mon 02 Jan 15:04") $note)}}
+				{{if inFold "set" $subcommand}}
+					{{if $db_old}}
+						{{$db_old_split := split $db_old.Value "\n"}}
+						{{$last_id := reFind `\A\d+\b` (index $db_old_split (sub (len $db_old_split) 1))|toInt}}
+						{{dbSet "notes" $user.ID (printf "%s\n%d %s: %s" $db_old.Value (add $last_id 1) (currentTime.Format "Mon 02 Jan 15:04") $note)}}
+					{{else}}
+						{{dbSet "notes" $user.ID (printf "%d %s: %s" 1 (currentTime.Format "Mon 02 Jan 15:04") $note)}}
+					{{end}}
 				{{end}}
+			{{else}}
+				{{$err = printf "`%s` is not a valid subcommand!\nValid subcommands are: `%s`.\nRun `%snotes help` for more information." $subcommand $subcommands_string $prefix}}
 			{{end}}
 		{{else}}
-			{{$err = printf "`%s` is not a valid subcommand!\nValid subcommands are: `%s`" $subcommand (joinStr "`, `" $valid_subcommands)}}
+			{{$err = "Member not found."}}
 		{{end}}
-	{{else}}
-		{{$err = "Member not found."}}
 	{{end}}
 {{else}}
 	{{addReactions "a:loading:833420211075940422"}}
