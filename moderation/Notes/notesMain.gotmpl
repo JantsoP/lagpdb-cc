@@ -6,6 +6,7 @@
 	Source: https://github.com/l-zeuch/lagpdb-cc
 	Licensed under the terms of BSD-3-Clause
 */}}
+
 {{/* CONFIGURATION START */}}
 {{$BASE_PERMISSION := "ManageMessages"}}
 {{$NUKE_PERMISSION := "ManageServer"}}
@@ -13,9 +14,23 @@
 
 {{/* ACTUAL CODE, DO NOT TOUCH */}}
 {{$query := dict "Flags" (dict "-d" "Duration" "-page" "Page") "Args" .CmdArgs}}
-{{$subcommand := index $query.Out.Positional 0}}
-{{$user := (getMember (index $query.Out.Positional 1)).User}}
-{{$note := slice $query.Out.Positional 2|joinStr " "}}
+{{template "parseFlags" $query}}
+
+{{$subcommand := ""}}
+{{$member := userArg nil}}
+{{$note := ""}}
+
+{{if ge (len $query.Out.Positional) 1}}
+{{$subcommand = index $query.Out.Positional 0}}
+{{end}}
+
+{{if ge (len $query.Out.Positional) 2}}
+{{$member = (getMember (index $query.Out.Positional 1))}}
+{{end}}
+
+{{if ge (len $query.Out.Positional) 3}}
+{{$note = joinStr " " (slice $query.Out.Positional 2).StringSlice}}
+{{end}}
 
 {{$valid_subcommands := cslice "help" "set" "get" "del" "delall" "nuke"}}
 {{$subcommands_string := joinStr "`, `" $valid_subcommands.StringSlice}}
@@ -23,52 +38,76 @@
 {{$temp := index (reFindAllSubmatches `.*?: \x60(.*)\x60\z` (execAdmin "prefix")) 0 1}}
 {{$prefix := reReplace `[\.\[\]\-\?\!\\\*\{\}\(\)\|\+]` $temp `\${0}`}}
 
+{{$duration := or (toDuration $query.Out.Flags.Duration).Seconds 0}}
+
 {{$err := ""}}
+{{$out := sdict "footer" (sdict "text" (printf "Triggered by %s" .User) "icon_url" (.User.AvatarURL "1024"))
+	"thumbnail" (sdict "url" ($member.User.AvatarURL "1024"))
+}}
 
 {{$helper_embed := cembed "title" "Notes Help Page"
 	"fields" (cslice
-		(sdict "name" "• Basic Usage" "value" (printf "Valid subcommands are:`%s`.\nIf none are given, this page is shown instead.```%snotes <subcommand> (Arguments)```" $subcommands_string $prefix ))
-		(sdict "name" "• Help" "value" (printf "Shows this text!```%snote help```" $prefix))
-		(sdict "name" "• Set" "value" (printf "Sets a note on an user.```%snote set <User:Mention/ID> <Note:Text>```" $prefix))
-		(sdict "name" "• Get" "value" (printf "Gets all notes of an user.```%snote get <User:Mention/ID>```" $prefix))
-		(sdict "name" "• Del" "value" (printf "Deletes a given note of given user.```%snote del <User:Mention/ID> <NoteID:Whole Number>```The note ID can be obtained by running the `get` subcommand. The deleted note will be shown, in case you accidentally deleted the wrong one." $prefix))
-		(sdict "name" "• Delall" "value" (printf "Deletes all notes of the given user.\n:warning: **This action is irreversible.** :warning:```%snote delall <User:Mention/ID>```" $prefix))
-		(sdict "name" "• Nuke" "value" (printf "Deletes all entries for all notes. Useful when you wish to remove this system, or want to clean it up.\n:warning: **This action is irreversible. Don't run it \"to test\". It will work.** :warning:```%snote nuke```" $prefix))
+		(sdict "name" "• Basic Usage" "value" (printf "Valid subcommands are:`%s`.\nIf none are given, this page is shown instead.```%snote <subcommand> (Arguments)```" $subcommands_string $temp))
+		(sdict "name" "• Help" "value" (printf "Shows this text!```%snote help```" $temp))
+		(sdict "name" "• Set" "value" (printf "Sets a note on a user.```%snote set <User:Mention/ID> <Note:Text>```" $temp))
+		(sdict "name" "• Get" "value" (printf "Gets all notes of a user.```%snote get <User:Mention/ID>```" $temp))
+		(sdict "name" "• Del" "value" (printf "Deletes a given note of given user.```%snote del <User:Mention/ID> <NoteID:Whole Number>```The note ID can be obtained by running the `get` subcommand. The deleted note will be shown, in case you accidentally deleted the wrong one." $temp))
+		(sdict "name" "• Delall" "value" (printf "Deletes all notes of the given user.\n:warning: **This action is irreversible.** :warning:```%snote delall <User:Mention/ID>```" $temp))
+		(sdict "name" "• Nuke" "value" (printf "Deletes all notes server-wide. Useful when you wish to remove this system, or want to clean it up.\n:warning: **This action is irreversible. Don't run it \"to test\". It will work.** :warning:```%snote nuke```" $temp))
 	)
+	"footer" (sdict "text" (printf "Triggered by %s" .User) "icon_url" (.User.AvatarURL "1024"))
 }}
 
-{{$has_perms = (in (split (index (split (exec "viewperms") "\n") 2) ", ") $BASE_PERMISSION)}}
+{{$has_perms := (in (split (index (split (exec "viewperms") "\n") 2) ", ") $BASE_PERMISSION)}}
+{{$note_id := 1}}
+{{$time_format := currentTime.Format "Mon 02 Jan 15:04"}}
 
-{{if inFold (exec "cc" .CCID) "\nCopyright (c): Luca Z. <https://github.com/l-zeuch>, 2021"}}
+{{if and (inFold (exec "cc" .CCID) "\n\tCopyright (c): Luca Z. <https://github.com/l-zeuch>, 2021") $has_perms}}
 	{{if or (inFold "help" $subcommand) (not $subcommand)}}
 		{{sendMessage nil $helper_embed}}
 	{{else}}
-		{{if $user}}
-			{{if inFold $valid_subcommands $subcommand}}
-				{{$db_old := dbGet "notes" $user.ID}}
+		{{if inFold $valid_subcommands $subcommand}}
+			{{if $member}}
+				{{$member = $member.User}}
+				{{$db_old := dbGet $member.ID "notes"}}
 				{{if inFold "set" $subcommand}}
 					{{if $db_old}}
 						{{$db_old_split := split $db_old.Value "\n"}}
 						{{$last_id := reFind `\A\d+\b` (index $db_old_split (sub (len $db_old_split) 1))|toInt}}
-						{{dbSet "notes" $user.ID (printf "%s\n%d %s: %s" $db_old.Value (add $last_id 1) (currentTime.Format "Mon 02 Jan 15:04") $note)}}
+						{{$note_id = add $last_id 1}}
+						{{dbSet $member.ID "notes" (printf "%s\n%d %s: %s" $db_old.Value $note_id $time_format $note)}}
 					{{else}}
-						{{dbSet "notes" $user.ID (printf "%d %s: %s" 1 (currentTime.Format "Mon 02 Jan 15:04") $note)}}
+						{{dbSet $member.ID "notes" (printf "%d %s: %s" $note_id $time_format $note)}}
 					{{end}}
+					{{$out.Set "author" (sdict "name" "Success!")}}
+					{{$out.Set "color" 0x00ff00}}
+					{{$out.Set "fields" (cslice
+						(sdict "name" "• User:" "value" (printf "`%s` (ID `%d`)" $member $member.ID))
+						(sdict "name" "• Note:" "value" (printf "ID: `%d`\nText: %s" $note_id $note)))
+					}}
+				{{else if inFold "get" $subcommand}}
+					{{$db := dbGet $member.ID "notes"}}
+					{{$out.Set "title" (printf "Notes for %s (ID %d)" $member $member.ID)}}
+					{{$out.Set "description" (or $db.Value "None recorded.")}}
 				{{end}}
 			{{else}}
-				{{$err = printf "`%s` is not a valid subcommand!\nValid subcommands are: `%s`.\nRun `%snotes help` for more information." $subcommand $subcommands_string $prefix}}
+				{{$err = "Member not found."}}
 			{{end}}
 		{{else}}
-			{{$err = "Member not found."}}
+			{{$err = printf "`%s` is not a valid subcommand!\nValid subcommands are: `%s`.\nRun `%snotes help` for more information." $subcommand $subcommands_string $temp}}
 		{{end}}
 	{{end}}
 {{else}}
 	{{addReactions "a:loading:833420211075940422"}}
 {{end}}
 
-{{if $err}}
-	{{$err_embed := cembed "description" $err "author" (sdict "name" "An Error Occurred:") "color" 0xff0000}}
-	{{sendMessage nil $err_embed}}
+{{if and $err (not $out)}}
+	{{$err = cembed "description" $err "author" (sdict "name" "An Error Occurred:") "color" 0xff0000
+		"footer" (sdict "text" (printf "Triggered by: %s" .User) "icon_url" (.User.AvatarURL "1024"))
+	}}
+	{{sendMessage nil $err}}
+{{else}}
+	{{sendMessage nil (cembed $out)}}
 {{end}}
 
 {{/* Helper Functions */}}
