@@ -1,0 +1,154 @@
+{{/*
+	This custom command system allows you to take notes on users and share them across your server staff.
+	This script handles the main stuff, such as getting, setting, or deleting notes.
+
+	Copyright (c): Luca Z. <https://github.com/l-zeuch>, 2021
+	Source: https://github.com/l-zeuch/lagpdb-cc
+	Licensed under the terms of BSD-3-Clause
+*/}}
+
+{{/* CONFIGURATION START */}}
+{{$NUKE_PERMISSION := "ManageServer"}}
+{{$BASE_PERMISSION := "ManageMessages"}}
+{{$DELETE_TIMEOUT := toDuration "2m"}}
+{{$PASSWD_CHARSET := toRune "AaBbCcDdEeFfGgHhIiJjKkLiMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789@€<>(){}[]!$%&?"}}
+{{/* CONFIGURATION END */}}
+
+{{/* ACTUAL CODE, DO NOT TOUCH */}}
+{{$query := dict "Flags" (dict "-d" "Duration" "-page" "Page") "Args" .CmdArgs}}
+{{template "parseFlags" $query}}
+
+{{$subcommand := ""}}
+{{$target := userArg nil}}
+{{$note := ""}}
+
+{{if ge (len $query.Out.Positional) 1}}
+{{$subcommand = index $query.Out.Positional 0}}
+{{end}}
+
+{{if ge (len $query.Out.Positional) 2}}
+{{$target = (getMember (index $query.Out.Positional 1))}}
+{{end}}
+
+{{if ge (len $query.Out.Positional) 3}}
+{{$note = joinStr " " (slice $query.Out.Positional 2).StringSlice}}
+{{end}}
+
+{{$valid_subcommands := cslice "help" "set" "get" "del" "delall" "nuke"}}
+{{$subcommands_string := joinStr "`, `" $valid_subcommands.StringSlice}}
+
+{{$prefix := index (reFindAllSubmatches `.*?: \x60(.*)\x60\z` (execAdmin "prefix")) 0 1}}
+{{/* {{$prefix_escaped := reReplace `[\.\[\]\-\?\!\\\*\{\}\(\)\|\+]` $prefix `\${0}`}} */}}
+
+{{$duration := or (toDuration $query.Out.Flags.Duration).Seconds 0}}
+
+{{$err := ""}}
+{{$out := sdict "footer" (sdict "text" (printf "Triggered by %s" .User) "icon_url" (.User.AvatarURL "1024"))
+	"thumbnail" (sdict "url" ($target.User.AvatarURL "1024"))
+}}
+
+{{$helper_embed := cembed "title" "Notes Help Page"
+	"fields" (cslice
+		(sdict "name" "• Basic Usage" "value" (printf "Valid subcommands are:`%s`.\nIf none are given, this page is shown instead.```%snote <subcommand> (Arguments)```" $subcommands_string $prefix))
+		(sdict "name" "• Help" "value" (printf "Shows this text!```%snote help```" $prefix))
+		(sdict "name" "• Set" "value" (printf "Sets a note on a user.```%snote set <User:Mention/ID> <Note:Text>```" $prefix))
+		(sdict "name" "• Get" "value" (printf "Gets all notes of a user.```%snote get <User:Mention/ID>```" $prefix))
+		(sdict "name" "• Del" "value" (printf "Deletes a given note of given user.```%snote del <User:Mention/ID> <NoteID:Whole Number>```The note ID can be obtained by running the `get` subcommand. The deleted note will be shown, in case you accidentally deleted the wrong one." $prefix))
+		(sdict "name" "• Delall" "value" (printf "Deletes all notes of the given user.\n:warning: **This action is irreversible.** :warning:```%snote delall <User:Mention/ID>```" $prefix))
+		(sdict "name" "• Nuke" "value" (printf "Deletes all notes server-wide. Useful when you wish to remove this system, or want to clean it up.\n:warning: **This action is irreversible. Don't run it \"to test\". It will work.** :warning:```%snote nuke```" $prefix))
+	)
+	"footer" (sdict "text" (printf "Triggered by %s" .User) "icon_url" (.User.AvatarURL "1024"))
+}}
+
+{{$has_perms := (in (split (index (split (exec "viewperms") "\n") 2) ", ") $BASE_PERMISSION)}}
+{{$note_id := 1}}
+{{$time_format := currentTime.Format "Mon 02 Jan 15:04"}}
+
+{{if and (inFold (exec "cc" .CCID) "\n\tCopyright (c): Luca Z. <https://github.com/l-zeuch>, 2021") $has_perms}}
+	{{if or (inFold "help" $subcommand) (not $subcommand)}}
+		{{sendMessage nil $helper_embed}}
+	{{else}}
+		{{if inFold $valid_subcommands $subcommand}}
+			{{if $target}}
+				{{$target = $target.User}}
+				{{$db_old := dbGet $target.ID "notes"}}
+				{{if inFold "set" $subcommand}}
+					{{if $db_old}}
+						{{$db_old_split := split $db_old.Value "\n"}}
+						{{$last_id := reFind `\A\d+\b` (index $db_old_split (sub (len $db_old_split) 1))|toInt}}
+						{{$note_id = add $last_id 1}}
+						{{dbSet $target.ID "notes" (printf "%s\n%d %s: %s" $db_old.Value $note_id $time_format $note)}}
+					{{else}}
+						{{dbSet $target.ID "notes" (printf "%d %s: %s" $note_id $time_format $note)}}
+					{{end}}
+					{{$out.Set "author" (sdict "name" "Success!")}}
+					{{$out.Set "color" 0x00ff00}}
+					{{$out.Set "fields" (cslice
+						(sdict "name" "• User:" "value" (printf "`%s` (ID `%d`)" $target $target.ID))
+						(sdict "name" "• Note:" "value" (printf "ID: `%d`\nText: %s" $note_id $note)))
+					}}
+				{{else if inFold "get" $subcommand}}
+					{{$db := dbGet $target.ID "notes"}}
+					{{$out.Set "title" (printf "Notes for %s (ID %d)" $target $target.ID)}}
+					{{$out.Set "description" (or $db.Value "None recorded.")}}
+				{{else if inFold "delall" $subcommand}}
+					{{if eq (len .CmdArgs) 2}}
+						{{$passwd := ""}}
+						{{$len := len $PASSWD_CHARSET}}
+						{{range seq 0 12}}
+							{{- $passwd = printf "%s%c" $passwd (index $PASSWD_CHARSET (randInt $len)) -}}
+						{{end}}
+						{{$out.Set "title" "Warning!"}}
+						{{$out.Set "description" "You are about to delete **all** notes on that user. Did you perhaps meant to use `note del`?"}}
+						{{$out.Set "fields" (cslice
+							(sdict "name" "OK. I'm aware and take responsibility." "value" (printf "Good. Run the following command **within the next ** to confirm your choice.\n```%snote delall %d %s" $prefix $target.ID $passwd)))
+							(sdict "name" "I'd like to think about it." "value" "That is also OK. Just let it expire.")
+						}}
+						{{$del_msg_id := sendMessageRetID nil (cembed $out)}}
+						{{dbSetExpire .User.ID (printf "notes_delall_%d" $target.ID) $DELETE_TIMEOUT.Seconds}}
+					{{else}}
+						{{if $passwd := (dbGet .User.ID "notes_delall_%d" $target.ID).Value}}
+							{{if eq (index .CmdArgs 2) $passwd}}
+								{{dbDel $target.ID "notes"}}
+							{{else}}
+
+					{{end}}
+			{{else}}
+				{{$err = "Member not found."}}
+			{{end}}
+		{{else}}
+			{{$err = printf "`%s` is not a valid subcommand!\nValid subcommands are: `%s`.\nRun `%snotes help` for more information." $subcommand $subcommands_string $prefix}}
+		{{end}}
+	{{end}}
+{{else}}
+	{{addReactions "a:loading:833420211075940422"}}
+{{end}}
+
+{{if and $err (not $out)}}
+	{{$err = cembed "description" $err "author" (sdict "name" "An Error Occurred:") "color" 0xff0000
+		"footer" (sdict "text" (printf "Triggered by: %s" .User) "icon_url" (.User.AvatarURL "1024"))
+	}}
+	{{sendMessage nil $err}}
+{{else if not (inFold "delall" $subcommand)}}
+	{{sendMessage nil (cembed $out)}}
+{{end}}
+
+{{/* Helper Functions */}}
+{{define "parseFlags"}}
+	{{.Set "Out" (sdict "Positional" (cslice) "Flags" (dict))}}
+
+	{{$curFlag := ""}}
+	{{$lastIdx := sub (len .Args) 1}}
+	{{range $i, $arg := .Args}}
+		{{- if $curFlag}}
+			{{- $.Out.Flags.Set $curFlag $arg}}
+			{{- $curFlag = ""}}
+		{{- else if and ($id := $.Flags.Get $arg) (ne $i $lastIdx)}}
+			{{- $curFlag = $id}}
+		{{- else if $id := $.Switches.Get $arg}}
+			{{- $.Out.Flags.Set $id true}}
+		{{- else}}
+			{{- $.Out.Set "Positional" ($.Out.Positional.Append $arg)}}
+		{{- end -}}
+	{{end}}
+{{end}}
