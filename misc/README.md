@@ -23,7 +23,7 @@ Don't forget to save and have your DMs open to YAGPDB.
 
 ###### Bookmark Message
 
-![demo bookmark](../assets/bookmark-demo.png)
+![demo bookmark](../assets/misc/bookmark/bookmark-demo.png)
 
 ### Reaction-Bookmark
 
@@ -46,4 +46,4 @@ Don't forget to save, and keep your DMs to YAGPDB open.
 
 ###### Reaction-Bookmark Message
 
-![demo reactionbookmark](../assets/reactionbookmark-demo.png)
+![demo reactionbookmark](../assets/misc/bookmark/reactionbookmark-demo.png)
