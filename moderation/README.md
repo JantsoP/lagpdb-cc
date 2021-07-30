@@ -12,25 +12,14 @@ This system adds a whole lot more functionality to the base `report` command, ma
 * A report history listing the past reports
 * Notifications to keep track and encourage communication
 
-Please view the folder's `README.md` for a full breakdown of this system, as well as how to install it.
+> Please view the folder's `README.md` for a full breakdown of this system, as well as how to install it.
 
-### Getlogs
+### Notes
 
-A short little code to secretly obtain the message logs from another channel.
+A system bringing finally good staff notes to your server.
 
-#### Installing
+* Up to 10 notes per user, 500 characters each
+* basic CRUD functionality
+* blazingly fast, no bloat in your database
 
-As usual, add this script as a new custom command. The following configuration is recommened:
-
-```yaml
-Trigger Type: RegEx trigger, case insensitive
-Trigger: \A(?:\-|<@!?204255221017214977>)\s*g(?:et)?logs?(?:\s+|\z)
-```
-
-It is also recommended to restrict this custom command to only moderation/staff roles.
-
-#### Gallery
-
-Successful creation | Example failure
-| ---- | ---- |
-![success](../assets/getlogs-success.png) | ![failure](../assets/getlogs-failure.png)
+> Please view the folder's `README.md` for a full documentation of this system.
