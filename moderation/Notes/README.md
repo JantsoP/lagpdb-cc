@@ -26,6 +26,16 @@ Only change the variables surrounded by the two comments.
 
 ### Configuration
 
+#### Trigger
+
+```yaml
+Type: RegEx
+Case-Sensitive: false
+Trigger: \A(?:\-|<@!?204255221017214977>)\snotes?(?: +|\z)
+```
+
+Make sure to replace `-` with your prefix, should it be different.
+
 As stated above, change the variables if necessary. This section will explain them more in-depth and show options as well as give tips as to how to configure them.
 
 ##### $BASE_PERMISSION
