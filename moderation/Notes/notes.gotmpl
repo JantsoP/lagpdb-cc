@@ -104,7 +104,7 @@
 					{{$db_new := ""}}
 					{{$old_note := ""}}
 					{{range $db_old}}
-						{{- if not (reFind (printf `\A%d;\b` $note_id) .)}}
+						{{- if not (reFind (printf `\A%d\b` $note_id) .)}}
 							{{- $db_new =  (printf "%s\n%s" $db_new .)}}
 						{{- else}}
 							{{- $old_note = slice (toString .) 19}}
