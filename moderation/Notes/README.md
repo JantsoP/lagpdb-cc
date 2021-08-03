@@ -31,7 +31,7 @@ Only change the variables surrounded by the two comments.
 ```yaml
 Type: RegEx
 Case-Sensitive: false
-Trigger: \A(?:\-|<@!?204255221017214977>)\snotes?(?: +|\z)
+Trigger: \A(?:\-|<@!?204255221017214977>)\s*notes?(?: +|\z)
 ```
 
 Make sure to replace `-` with your prefix, should it be different.
