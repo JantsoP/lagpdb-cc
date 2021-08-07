@@ -91,11 +91,13 @@
 			{{else if inFold "get" $subcommand}}
 				{{$notes := (dbGet $target.ID "notes").Value}}
 				{{$out.Set "title" (printf "Notes for %s (ID %d)" $target $target.ID)}}
-				{{if lt (len $notes) 4000}}
-					{{$out.Set "description" (or $notes "None recorded.")}}
-				{{else}}
-					{{$out.Set "description" (slice $notes 0 4000)}}
-					{{$out.Set "fields" (cslice (sdict "name" "Continued..." "value" (slice $notes 4000)))}}
+				{{$out.Set "description" "None recorded."}}
+				{{if $notes}}
+					{{$out.Set "description" $notes}}
+					{{if gt (len $notes) 4000}}
+						{{$out.Set "description" (slice $notes 0 4000)}}
+						{{$out.Set "fields" (cslice (sdict "name" "Continued..." "value" (slice $notes 4000)))}}
+					{{end}}
 				{{end}}
 			{{else if inFold "del" $subcommand}}
 				{{if eq (len .CmdArgs) 3}}
