@@ -1,0 +1,48 @@
+{{/*
+	This CC gives the user an amount of Gayness that will attach to them forever. 
+	That's not all - it will also display all the most gays in the server in a top. 
+
+	Recommended trigger and trigger type: Command trigger with trigger `howgay`
+	Usage:
+		-howgay
+		-howgay @user
+
+	Copyright (c): mangowhite <https://github.com/mangowhite)
+	Source: https://github.com/l-zeuch/lagpdb-cc
+	Licensed under Terms of BSD-3-Clause
+*/}}
+
+{{$howGay:=randInt 101}}
+{{$po:=0}}
+{{$color:=randInt 16777216}}
+{{$user:= ""}}{{with .Message.Mentions}}{{$user = userArg (index . 0)}}{{end}}
+{{$embed:= sdict "color" $color "title" "How Gay"}}
+{{if $user}}
+	{{$db:= (dbGet $user.ID "howGay")}}
+	{{range .Guild.Roles}}
+		{{if and (in (getMember $user.ID).Roles .ID) .Color (lt $po .Position)}}
+			{{$po = .Position}}
+			{{$color = .Color}}
+		{{end}}
+	{{end}}
+	{{if not $db}}
+		{{dbSet $user.ID "howGay" $howGay}}
+	{{end}}
+	{{$list:= ""}}
+	{{$num:= 0}}
+	{{range (dbTopEntries "howGay" 10 0)}}
+		{{$num = add $num 1}}
+		{{$list = print $list $num " • " .User.Username " - " .Value "%\n"}}
+	{{end}}
+	{{$embed.Set "fields" (cslice (sdict "name" "The Most Gays" "value" $list))}}
+	{{$embed.Set "description" (print (or $user.Username (getMember $user.ID).Nick) " is " (or $db.Value $howGay) "% gay!  🏳️‍🌈")}}
+	{{if (ge (toInt $db.Value) 100)}}
+		{{$embed.Set "image" (sdict "url" "https://cdn.discordapp.com/attachments/832547182858862602/872972692469461023/unknown.png")}}
+	{{end}}
+	{{sendMessage nil (complexMessage 
+			"content" $user.Mention 
+			"embed" (cembed $embed)
+	)}}
+{{else}}
+	❌ You need to input a valid user!
+{{end}}
