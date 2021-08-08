@@ -1,3 +1,7 @@
+---
+labels: status/needs-review, status/needs-testing
+---
+
 **What this PR does and why it should be merged**
 
 **Status**
