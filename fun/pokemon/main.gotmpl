@@ -6,6 +6,7 @@
 
     Copyright (c): StinkySlinky#8071, 2021
     Source: <https://github.com/l-zeuch/lagpdb-cc>
+    Updated by: <htps://github.com/jantsop>
     Licensed under the terms of BSD-3-Clause
 */}}
 
@@ -15,7 +16,7 @@
 
 {{/* CONFIG AREA END */}}
 
-{{$enemy := (toString (randInt 1 808))}}
+{{$enemy := (toString (randInt 1 898))}}
 {{$dict := dict}}
 {{- range $key, $value := (dbGet 1 "Names").Value -}}
     {{- $dict.Set $key $value -}}

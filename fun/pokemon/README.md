@@ -18,8 +18,6 @@ If you run out of time, you'll see this:
 ## Negative effects
 
 1. Requires 3 database entries (only 1 is permanent, the other 2 are deleted when an answer is correct or time runs out)
-2. (currently) Does not support generation 8 pokémon
-3. Some pokémon may be spelt incorrectly, leading to a correct answer being registered as incorrect.
 
 ----
 Copyright (c) 2021: StinkySlinky#8071
